@@ -19,8 +19,8 @@ const UserPage: NextPage = () => {
                             create
                         </button>
                     </div>
-                    <div className="overflow-x-auto relative shadow-md sm:rounded-lg w-full">
-                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <div className="overflow-x-auto relative shadow-md sm:rounded-lg w-full scrollbar-hide rounded-lg whitespace-nowrap">
+                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
                             <thead className="text-sm text-gray-200 uppercase bg-gray-50 bg-gray-700 text-gray-300 capitalize">
                                 <tr>
                                     <th scope="col" className="py-3 px-6">

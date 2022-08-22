@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { Dispatch } from 'react';
 
 import { adminApi } from '@/axios/adminApi';

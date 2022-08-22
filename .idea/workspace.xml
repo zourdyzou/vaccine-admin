@@ -2,10 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4ca4997c-7d50-46d7-b901-57b2be775f0e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.eslintignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux/actions/user-action.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux/reducers/user-reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/place/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/place/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/shared/LatestVaccineLotTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/LatestVaccineLotTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/shared/VaccineChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/VaccineChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/shared/VaccineDataContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/VaccineDataContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/data-type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/data-type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/user-type-action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/user-type-action.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/user/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/vaccine/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/vaccine/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/actions/admin-action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/actions/admin-action.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/reducers/admin-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/reducers/admin-reducer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +70,7 @@
       <workItem from="1660956739516" duration="399000" />
       <workItem from="1660957150132" duration="708000" />
       <workItem from="1660957890296" duration="4650000" />
-      <workItem from="1660978344971" duration="5001000" />
+      <workItem from="1660978344971" duration="15516000" />
     </task>
     <servers />
   </component>

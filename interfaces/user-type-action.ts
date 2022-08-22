@@ -1,86 +1,97 @@
 import { IClearErrors } from '@/interfaces/admin-type-action';
+import { IUserData, IUserVaccineData, IVaccinated, TypedUserParams } from '@/interfaces/data-type';
 import {
-  IUserData,
-  IVaccinated,
-  TypedUserParams,
-} from '@/interfaces/data-type';
-import {
-  CreateUserType,
-  CREATEVaccinatedUserType,
-  GETAllUserType,
-  UpdateUserType,
+    CreateUserType,
+    CREATEVaccinatedUserType,
+    GETAllUserType,
+    UpdateUserType,
+    GETSingleUserType,
 } from '@/redux/constants/user-constant';
 
 export interface ICreateUserRequest {
-  type: CreateUserType.CREATE_USER_REQUEST;
+    type: CreateUserType.CREATE_USER_REQUEST;
 }
 
 export interface ICreateUserSuccess {
-  type: CreateUserType.CREATE_USER_SUCCESS;
-  payload: IUserData;
+    type: CreateUserType.CREATE_USER_SUCCESS;
+    payload: IUserData;
 }
 
 export interface ICreateUserFail {
-  type: CreateUserType.CREATE_USER_FAIL;
-  payload: string | null;
+    type: CreateUserType.CREATE_USER_FAIL;
+    payload: string | null;
 }
 
 export interface IUpdateUserRequest {
-  type: UpdateUserType.UPDATE_USER_REQUEST;
+    type: UpdateUserType.UPDATE_USER_REQUEST;
 }
 
 export interface IUpdateUserSuccess {
-  type: UpdateUserType.UPDATE_USER_SUCCESS;
-  payload: TypedUserParams;
+    type: UpdateUserType.UPDATE_USER_SUCCESS;
+    payload: TypedUserParams;
 }
 
 export interface IUpdateUserFail {
-  type: UpdateUserType.UPDATE_USER_FAIL;
-  payload: string | null;
+    type: UpdateUserType.UPDATE_USER_FAIL;
+    payload: string | null;
 }
 
 export interface IGETAllUserRequest {
-  type: GETAllUserType.GET_ALL_USER_REQUEST;
+    type: GETAllUserType.GET_ALL_USER_REQUEST;
 }
 
 export interface IGETAllUserSuccess {
-  type: GETAllUserType.GET_ALL_USER_SUCCESS;
-  payload: IUserData;
+    type: GETAllUserType.GET_ALL_USER_SUCCESS;
+    payload: IUserData[];
 }
 
 export interface IGETAllUserFail {
-  type: GETAllUserType.GET_ALL_USER_FAIL;
-  payload: string | null;
+    type: GETAllUserType.GET_ALL_USER_FAIL;
+    payload: string | null;
+}
+
+export interface IGETSingleUserRequest {
+    type: GETSingleUserType.GET_SINGLE_USER_REQUEST;
+}
+
+export interface IGETSingleUserSuccess {
+    type: GETSingleUserType.GET_SINGLE_USER_SUCCESS;
+    payload: IUserData;
+}
+
+export interface IGETSingleUserFail {
+    type: GETSingleUserType.GET_SINGLE_USER_FAIL;
+    payload: string | null;
 }
 
 export interface ICreateVaccinatedUserRequest {
-  type: CREATEVaccinatedUserType.CREATE_VACCINATED_USER_REQUEST;
+    type: CREATEVaccinatedUserType.CREATE_VACCINATED_USER_REQUEST;
 }
 
 export interface ICreateVaccinatedUserSuccess {
-  type: CREATEVaccinatedUserType.CREATE_VACCINATED_USER_SUCCESS;
-  payload: {
-    message: string;
-    data: IVaccinated;
-  };
+    type: CREATEVaccinatedUserType.CREATE_VACCINATED_USER_SUCCESS;
+    payload: IUserVaccineData;
 }
 
 export interface ICreateVaccinatedUserFail {
-  type: CREATEVaccinatedUserType.CREATE_VACCINATED_USER_FAIL;
-  payload: string | null;
+    type: CREATEVaccinatedUserType.CREATE_VACCINATED_USER_FAIL;
+    payload: string | null;
 }
 
 export type IUserAction =
-  | ICreateUserRequest
-  | ICreateUserSuccess
-  | ICreateUserFail
-  | IUpdateUserRequest
-  | IUpdateUserSuccess
-  | IUpdateUserFail
-  | IGETAllUserSuccess
-  | IGETAllUserRequest
-  | IGETAllUserFail
-  | ICreateVaccinatedUserRequest
-  | ICreateVaccinatedUserSuccess
-  | ICreateVaccinatedUserFail
-  | IClearErrors;
+    | ICreateUserRequest
+    | ICreateUserSuccess
+    | ICreateUserFail
+    | IUpdateUserRequest
+    | IUpdateUserSuccess
+    | IUpdateUserFail
+    | IGETAllUserSuccess
+    | IGETAllUserRequest
+    | IGETAllUserFail
+    | IGETSingleUserRequest
+    | IGETSingleUserSuccess
+    | IGETSingleUserFail
+    | ICreateVaccinatedUserRequest
+    | ICreateVaccinatedUserSuccess
+    | ICreateVaccinatedUserFail
+    | IClearErrors;
