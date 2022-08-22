@@ -33,8 +33,6 @@ export interface IVaccineData {
     id: string;
     name: string;
     updatedAt: string;
-    __v: number;
-    _id: string;
 }
 
 export interface IVaccineLot {
@@ -50,8 +48,6 @@ export interface IUserData {
     idNumber: string;
     address: string;
     vaccine: IVaccineData[];
-    __v: number;
-    _id: string;
     id: string;
 }
 

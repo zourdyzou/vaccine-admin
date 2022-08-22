@@ -1,5 +1,17 @@
 import { ClearError } from '@/interfaces/admin-type-action';
-import { IUserData, IUserVaccineData, TypedUserParams } from '@/interfaces/data-type';
+import {
+    IUserData,
+    IUserVaccineData,
+    IVaccineData,
+    IVaccineLot,
+    TypedUserParams,
+} from '@/interfaces/data-type';
+import {
+    userInitialState,
+    allUserInitialState,
+    updateUserInitialState,
+    vaccinationInitialState,
+} from '@/interfaces/initial-state';
 import { IUserAction } from '@/interfaces/user-type-action';
 import {
     CreateUserType,
@@ -9,13 +21,16 @@ import {
     UpdateUserType,
 } from '@/redux/constants/user-constant';
 
-type UpdateUserState = TypedUserParams & { loading: boolean; error: string };
-type CreateUserState = IUserData & { loading: boolean; error: string };
-type GetAllUserState = { users: IUserData[]; loading: boolean; error: string };
-type GetSingleUserState = IUserData & { loading: boolean; error: string };
-type VaccinationUserState = IUserVaccineData & { loading: boolean; error: string };
+export type UpdateUserState = TypedUserParams & { loading: boolean; error: string };
+export type CreateUserState = IUserData & { loading: boolean; error: string };
+export type GetAllUserState = { users: IUserData[]; loading: boolean; error: string };
+export type GetSingleUserState = IUserData & { loading: boolean; error: string };
+export type VaccinationUserState = IUserVaccineData & { loading: boolean; error: string };
 
-export const createUserReducer = (state: CreateUserState, action: IUserAction) => {
+export const createUserReducer = (
+    state: CreateUserState = userInitialState,
+    action: IUserAction,
+) => {
     switch (action.type) {
         case CreateUserType.CREATE_USER_REQUEST:
             return Object.assign({}, { ...state }, { loading: true });
@@ -32,7 +47,10 @@ export const createUserReducer = (state: CreateUserState, action: IUserAction) =
     }
 };
 
-export const updateUserReducer = (state: UpdateUserState, action: IUserAction) => {
+export const updateUserReducer = (
+    state: UpdateUserState = updateUserInitialState,
+    action: IUserAction,
+) => {
     switch (action.type) {
         case UpdateUserType.UPDATE_USER_REQUEST:
             return Object.assign({}, { ...state }, { loading: true });
@@ -49,7 +67,10 @@ export const updateUserReducer = (state: UpdateUserState, action: IUserAction) =
     }
 };
 
-export const getAllUserReducer = (state: GetAllUserState, action: IUserAction) => {
+export const getAllUserReducer = (
+    state: GetAllUserState = allUserInitialState,
+    action: IUserAction,
+) => {
     switch (action.type) {
         case GETAllUserType.GET_ALL_USER_REQUEST:
             return Object.assign({}, { ...state }, { loading: true });
@@ -66,7 +87,10 @@ export const getAllUserReducer = (state: GetAllUserState, action: IUserAction) =
     }
 };
 
-export const getSingleUserReducer = (state: GetSingleUserState, action: IUserAction) => {
+export const getSingleUserReducer = (
+    state: GetSingleUserState = userInitialState,
+    action: IUserAction,
+) => {
     switch (action.type) {
         case GETSingleUserType.GET_SINGLE_USER_REQUEST:
             return Object.assign({}, { ...state }, { loading: true });
@@ -83,7 +107,10 @@ export const getSingleUserReducer = (state: GetSingleUserState, action: IUserAct
     }
 };
 
-export const addVaccineUserReducer = (state: VaccinationUserState, action: IUserAction) => {
+export const addVaccineUserReducer = (
+    state: VaccinationUserState = vaccinationInitialState,
+    action: IUserAction,
+) => {
     switch (action.type) {
         case CREATEVaccinatedUserType.CREATE_VACCINATED_USER_REQUEST:
             return Object.assign({}, { ...state }, { loading: true });
