@@ -14,14 +14,13 @@ import { sideBarItems } from '@/utils/data-content';
 
 const DashboardLayout: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
     const router = useRouter();
-    const state = useAppSelector((state) => state.adminSummary);
     const { isLoading, checkToken } = useIsAuthenticated();
 
     useEffect(() => {
         checkToken();
     }, [checkToken]);
 
-    if (isLoading && state.loading) {
+    if (isLoading) {
         return (
             <Box sx={{ width: '100%', height: '100vh' }}>
                 <div className="flex items-center justify-center h-full">
