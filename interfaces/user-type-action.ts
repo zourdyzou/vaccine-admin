@@ -1,5 +1,5 @@
 import { IClearErrors } from '@/interfaces/admin-type-action';
-import { IUserData, IUserVaccineData, IVaccinated, TypedUserParams } from '@/interfaces/data-type';
+import { IUserData, IUserVaccineData, TypedUserParams } from '@/interfaces/data-type';
 import {
     CreateUserType,
     CREATEVaccinatedUserType,

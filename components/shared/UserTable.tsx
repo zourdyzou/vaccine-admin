@@ -7,27 +7,9 @@ import React from 'react';
 
 import { Loading } from '@/components/shared/Loading';
 import { useAppSelector } from '@/hooks/redux';
-import { IVaccineData } from '@/interfaces/data-type';
 
 export const UserTable: React.FunctionComponent = () => {
     const state = useAppSelector((stateData) => stateData.getAllUser);
-
-    const vaccinationStatus = (value: IVaccineData[]) => {
-        let IconComponent: any;
-
-        if (value.length > 1) return <VerifiedUserIcon />;
-        if (value.length === 1) return <ShieldOutlinedIcon />;
-        if (value.length < 1) return <ErrorOutlineOutlinedIcon />;
-
-        return (
-            <>
-                <IconComponent classNames="w-3 h-4" />
-                <span className="text-sm">
-                    Vaccinated with {value.length} dove{value.length > 1 && 's'}
-                </span>
-            </>
-        );
-    };
 
     if (state.loading && !state.users) {
         return (
@@ -79,7 +61,11 @@ export const UserTable: React.FunctionComponent = () => {
                                     >
                                         {userData.idNumber}
                                     </th>
-                                    <td className="py-4 px-6">{userData.fullName}</td>
+                                    <td className="py-4 px-6">
+                                        <span className="cursor-pointer text-blue-600 hover:underline">
+                                            {userData.fullName}
+                                        </span>
+                                    </td>
                                     <td className="py-4 px-6">{userData.phoneNumber}</td>
                                     <td className="py-4 px-6">
                                         <span
@@ -126,6 +112,11 @@ export const UserTable: React.FunctionComponent = () => {
                         })}
                 </tbody>
             </table>
+            {!state.users && (
+                <div className="h-[20em] bg-teal-800 flex items-center justify-center">
+                    <h1 className="text-2xl uppercase font-semibold">No data enlisted</h1>
+                </div>
+            )}
         </div>
     );
 };
