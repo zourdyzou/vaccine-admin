@@ -20,6 +20,8 @@ import DashboardLayout from '@/screens/layout/layout';
  * TODO:
  * Create form handling error using RHF/Formik
  * If user is created admin will be redirected to the user detail page
+ *
+ * Refactor logic handler => functions
  * @constructor
  */
 const UserPage: NextPage = () => {

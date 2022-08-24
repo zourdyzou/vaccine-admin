@@ -74,7 +74,10 @@ export const getSingleUser = (id: string) => async (dispatch: Dispatch<GetSingle
 
         dispatch({ type: GETSingleUserType.GET_SINGLE_USER_SUCCESS, payload: userDetail.user });
     } catch (error) {
-        dispatch({ type: GETSingleUserType.GET_SINGLE_USER_FAIL, payload: getErrorMessage(error) });
+        dispatch({
+            type: GETSingleUserType.GET_SINGLE_USER_FAIL,
+            payload: getErrorMessage(error),
+        });
     }
 };
 

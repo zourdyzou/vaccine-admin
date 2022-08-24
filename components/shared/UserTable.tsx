@@ -3,6 +3,7 @@ import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { Box } from '@mui/material';
 import classNames from 'classnames';
+import Link from 'next/link';
 import React from 'react';
 
 import { Loading } from '@/components/shared/Loading';
@@ -62,9 +63,13 @@ export const UserTable: React.FunctionComponent = () => {
                                         {userData.idNumber}
                                     </th>
                                     <td className="py-4 px-6">
-                                        <span className="cursor-pointer text-blue-600 hover:underline">
-                                            {userData.fullName}
-                                        </span>
+                                        <Link href={`/user/${userData.id}`} passHref>
+                                            <a>
+                                                <span className="cursor-pointer text-blue-600 hover:underline">
+                                                    {userData.fullName}
+                                                </span>
+                                            </a>
+                                        </Link>
                                     </td>
                                     <td className="py-4 px-6">{userData.phoneNumber}</td>
                                     <td className="py-4 px-6">
@@ -103,9 +108,11 @@ export const UserTable: React.FunctionComponent = () => {
                                         </span>
                                     </td>
                                     <td className="py-4 px-6 text-right">
-                                        <a className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                            Details
-                                        </a>
+                                        <Link href={`/user/${userData.id}`} passHref>
+                                            <a className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                Details
+                                            </a>
+                                        </Link>
                                     </td>
                                 </tr>
                             );
