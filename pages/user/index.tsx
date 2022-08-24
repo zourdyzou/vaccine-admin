@@ -3,19 +3,38 @@ import { Dialog, Transition } from '@headlessui/react';
 import { UserAddIcon, UserIcon } from '@heroicons/react/outline';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useCallback } from 'react';
 import { Fragment, useState } from 'react';
 
+import { userApi } from '@/axios/userApi';
+import { Loading } from '@/components/shared/Loading';
 import { UserTable } from '@/components/shared/UserTable';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { IUserData } from '@/interfaces/data-type';
 import { getAllUser } from '@/redux/actions/user-action';
 import DashboardLayout from '@/screens/layout/layout';
 
+/**
+ * TODO:
+ * Create form handling error using RHF/Formik
+ * If user is created admin will be redirected to the user detail page
+ * @constructor
+ */
 const UserPage: NextPage = () => {
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
+    const [onSubmit, setOnSubmit] = useState(false);
+    const [userData, setUserData] = useState({
+        phoneNumber: '',
+        fullName: '',
+        idNumber: '',
+        address: '',
+    });
+
     const fetchUsersData = useCallback(() => dispatch(getAllUser() as any), [dispatch]);
     const stateUser = useAppSelector((state) => state.getAllUser);
 
@@ -29,6 +48,37 @@ const UserPage: NextPage = () => {
 
     function openModal() {
         setIsOpen(true);
+    }
+
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const value = event.target.value;
+
+        setUserData((prevState) => ({
+            ...prevState,
+            [event.target.name]: value,
+        }));
+    }
+
+    async function handleCreateUser(e: React.FormEventHandler<HTMLFormElement>) {
+        e.preventDefault();
+
+        if (onSubmit) return;
+
+        setOnSubmit(true);
+
+        try {
+            const response = (await userApi.create(userData)) as unknown as {
+                token: string;
+                user: IUserData;
+            };
+
+            if (Object.entries(response).length !== 0) {
+                setOnSubmit(false);
+                await router.push(`/user/${response.user.id}`);
+            }
+        } catch (error) {
+            setOnSubmit(false);
+        }
     }
 
     return (
@@ -93,7 +143,7 @@ const UserPage: NextPage = () => {
                                             </p>
                                         </div>
 
-                                        <form className="mt-4">
+                                        <form onSubmit={handleCreateUser} className="mt-4">
                                             <div className="grid grid-cols-2 gap-5">
                                                 <div>
                                                     <div className="mb-6">
@@ -106,9 +156,12 @@ const UserPage: NextPage = () => {
                                                         <input
                                                             type="number"
                                                             id="number"
+                                                            name="idNumber"
                                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                             required
                                                             placeholder="00xxxxxxx"
+                                                            value={userData.idNumber}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                     <div className="mb-6">
@@ -121,9 +174,12 @@ const UserPage: NextPage = () => {
                                                         <input
                                                             type="text"
                                                             id="name"
+                                                            name="fullName"
                                                             placeholder="Richard Feynmann"
                                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                             required
+                                                            value={userData.fullName}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                 </div>
@@ -139,9 +195,12 @@ const UserPage: NextPage = () => {
                                                         <input
                                                             type="number"
                                                             id="number"
+                                                            name="phoneNumber"
                                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                             placeholder="user phone number"
                                                             required
+                                                            value={userData.phoneNumber}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                     <div className="mb-6">
@@ -154,9 +213,12 @@ const UserPage: NextPage = () => {
                                                         <input
                                                             type="text"
                                                             id="name"
+                                                            name="address"
                                                             placeholder="Alabama"
                                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                             required
+                                                            value={userData.address}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                 </div>
@@ -166,7 +228,7 @@ const UserPage: NextPage = () => {
                                                     type="submit"
                                                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                                 >
-                                                    Submit
+                                                    {onSubmit ? <Loading /> : 'submit'}
                                                 </button>
                                             </div>
                                         </form>
