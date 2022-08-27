@@ -7,12 +7,8 @@ import {
     IUserVaccineData,
     IVaccinated,
     TypedDispatch,
-    TypedUserParams,
 } from '@/interfaces/data-type';
 import {
-    ICreateUserFail,
-    ICreateUserRequest,
-    ICreateUserSuccess,
     ICreateVaccinatedUserFail,
     ICreateVaccinatedUserRequest,
     ICreateVaccinatedUserSuccess,
@@ -22,22 +18,15 @@ import {
     IGETSingleUserFail,
     IGETSingleUserRequest,
     IGETSingleUserSuccess,
-    IUpdateUserFail,
-    IUpdateUserRequest,
-    IUpdateUserSuccess,
 } from '@/interfaces/user-type-action';
 import { getErrorMessage } from '@/redux/actions/admin-action';
 import {
-    CreateUserType,
     CREATEVaccinatedUserType,
     GETAllUserType,
     GETSingleUserType,
-    UpdateUserType,
 } from '@/redux/constants/user-constant';
 
 type GetAllUserDispatch = IGETAllUserRequest | IGETAllUserSuccess | IGETAllUserFail;
-type CreateUserDispatch = ICreateUserRequest | ICreateUserSuccess | ICreateUserFail;
-type UpdateUserDispatch = IUpdateUserRequest | IUpdateUserSuccess | IUpdateUserFail;
 type GetSingleUserDispatch = IGETSingleUserRequest | IGETSingleUserFail | IGETSingleUserSuccess;
 type UserVaccinatedDispatch =
     | ICreateVaccinatedUserRequest
@@ -80,41 +69,6 @@ export const getSingleUser = (id: string) => async (dispatch: Dispatch<GetSingle
         });
     }
 };
-
-export const createUser =
-    (params: TypedUserParams) => async (dispatch: Dispatch<CreateUserDispatch>) => {
-        try {
-            dispatch({ type: CreateUserType.CREATE_USER_REQUEST });
-
-            const createdUser = (await userApi.create(params)) as unknown as {
-                user: IUserData;
-                token: string;
-            };
-
-            dispatch({ type: CreateUserType.CREATE_USER_SUCCESS, payload: createdUser.user });
-        } catch (error) {
-            dispatch({ type: CreateUserType.CREATE_USER_FAIL, payload: getErrorMessage(error) });
-        }
-    };
-
-export const updateUser =
-    (id: string, params: TypedUserParams) => async (dispatch: Dispatch<UpdateUserDispatch>) => {
-        try {
-            dispatch({ type: UpdateUserType.UPDATE_USER_REQUEST });
-
-            const updatedUser = (await userApi.update(id, params)) as unknown as {
-                message: string;
-                updated_user: IUserData;
-            };
-
-            dispatch({
-                type: UpdateUserType.UPDATE_USER_SUCCESS,
-                payload: updatedUser.updated_user,
-            });
-        } catch (error) {
-            dispatch({ type: UpdateUserType.UPDATE_USER_FAIL, payload: getErrorMessage(error) });
-        }
-    };
 
 export const addVaccinationToUser =
     (params: IVaccinated) => async (dispatch: Dispatch<UserVaccinatedDispatch>) => {

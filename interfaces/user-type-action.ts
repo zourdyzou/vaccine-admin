@@ -1,40 +1,10 @@
 import { IClearErrors } from '@/interfaces/admin-type-action';
-import { IUserData, IUserVaccineData, TypedUserParams } from '@/interfaces/data-type';
+import { IUserData, IUserVaccineData } from '@/interfaces/data-type';
 import {
-    CreateUserType,
     CREATEVaccinatedUserType,
     GETAllUserType,
-    UpdateUserType,
     GETSingleUserType,
 } from '@/redux/constants/user-constant';
-
-export interface ICreateUserRequest {
-    type: CreateUserType.CREATE_USER_REQUEST;
-}
-
-export interface ICreateUserSuccess {
-    type: CreateUserType.CREATE_USER_SUCCESS;
-    payload: IUserData;
-}
-
-export interface ICreateUserFail {
-    type: CreateUserType.CREATE_USER_FAIL;
-    payload: string | null;
-}
-
-export interface IUpdateUserRequest {
-    type: UpdateUserType.UPDATE_USER_REQUEST;
-}
-
-export interface IUpdateUserSuccess {
-    type: UpdateUserType.UPDATE_USER_SUCCESS;
-    payload: TypedUserParams;
-}
-
-export interface IUpdateUserFail {
-    type: UpdateUserType.UPDATE_USER_FAIL;
-    payload: string | null;
-}
 
 export interface IGETAllUserRequest {
     type: GETAllUserType.GET_ALL_USER_REQUEST;
@@ -79,12 +49,6 @@ export interface ICreateVaccinatedUserFail {
 }
 
 export type IUserAction =
-    | ICreateUserRequest
-    | ICreateUserSuccess
-    | ICreateUserFail
-    | IUpdateUserRequest
-    | IUpdateUserSuccess
-    | IUpdateUserFail
     | IGETAllUserSuccess
     | IGETAllUserRequest
     | IGETAllUserFail

@@ -4,7 +4,12 @@
     <list default="true" id="4ca4997c-7d50-46d7-b901-57b2be775f0e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/shared/AutocompleteBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/AutocompleteBox.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/user-type-action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/user-type-action.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/user/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/actions/user-action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/actions/user-action.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/constants/user-constant.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/constants/user-constant.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/reducers/reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/reducers/reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/reducers/user-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/reducers/user-reducer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +71,7 @@
       <workItem from="1660957890296" duration="4650000" />
       <workItem from="1660978344971" duration="43418000" />
       <workItem from="1661476875021" duration="3431000" />
-      <workItem from="1661503126257" duration="11365000" />
+      <workItem from="1661503126257" duration="17106000" />
     </task>
     <servers />
   </component>

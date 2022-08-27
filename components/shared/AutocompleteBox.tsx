@@ -20,7 +20,7 @@ const getSuggestions = (value: string) => {
 // input value for every given suggestion.
 const getSuggestionValue = (suggestion: StateOption) => suggestion.label;
 
-// Use your imagination to render suggestions.
+// render suggestions.
 const renderSuggestion = (suggestion: StateOption) => (
     <div className="bg-indigo-700 px-4 py-2 rounded-md font-medium mt-1 cursor-pointer hover:bg-indigo-900">
         {suggestion.label}

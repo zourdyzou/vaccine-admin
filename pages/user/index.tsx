@@ -12,7 +12,7 @@ import { userApi } from '@/axios/userApi';
 import { AutocompleteBox } from '@/components/shared/AutocompleteBox';
 import { Loading } from '@/components/shared/Loading';
 import { UserTable } from '@/components/shared/UserTable';
-import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { useAppDispatch } from '@/hooks/redux';
 import { IUserData } from '@/interfaces/data-type';
 import { getAllUser } from '@/redux/actions/user-action';
 import DashboardLayout from '@/screens/layout/layout';
@@ -40,7 +40,6 @@ const UserPage: NextPage = () => {
     const [address, setAddress] = useState(stateOptions[0].label);
 
     const fetchUsersData = useCallback(() => dispatch(getAllUser() as any), [dispatch]);
-    const stateUser = useAppSelector((state) => state.getAllUser);
 
     React.useEffect(() => {
         fetchUsersData();
@@ -63,30 +62,33 @@ const UserPage: NextPage = () => {
         }));
     }
 
-    async function handleCreateUser(e: React.FormEventHandler<HTMLFormElement>) {
-        e.preventDefault();
+    const createUserHandler = React.useCallback(
+        async (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
 
-        if (onSubmit) return;
+            if (onSubmit) return;
 
-        setOnSubmit(true);
+            setOnSubmit(true);
 
-        try {
-            const response = (await userApi.create({
-                ...userData,
-                address: address,
-            })) as unknown as {
-                token: string;
-                user: IUserData;
-            };
+            try {
+                const createdUser = (await userApi.create({
+                    ...userData,
+                    address,
+                })) as unknown as {
+                    user: IUserData;
+                    token: string;
+                };
 
-            if (Object.entries(response).length !== 0) {
+                if (Object.entries(createdUser).length !== 0) {
+                    setOnSubmit(false);
+                    await router.push(`/user/${createdUser.user.id}`);
+                }
+            } catch (error) {
                 setOnSubmit(false);
-                await router.push(`/user/${response.user.id}`);
             }
-        } catch (error) {
-            setOnSubmit(false);
-        }
-    }
+        },
+        [address, onSubmit, router, userData],
+    );
 
     return (
         <>
@@ -150,9 +152,9 @@ const UserPage: NextPage = () => {
                                             </p>
                                         </div>
 
-                                        <form onSubmit={handleCreateUser} className="mt-4">
-                                            <div className="flex flex-col gap-5 ">
-                                                <div className="mb-6">
+                                        <form onSubmit={createUserHandler} className="mt-4">
+                                            <div className="flex flex-col gap-4 mb-6">
+                                                <div className="">
                                                     <label
                                                         htmlFor="number"
                                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -170,7 +172,7 @@ const UserPage: NextPage = () => {
                                                         onChange={handleChange}
                                                     />
                                                 </div>
-                                                <div className="mb-6">
+                                                <div className="">
                                                     <label
                                                         htmlFor="name"
                                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -189,7 +191,7 @@ const UserPage: NextPage = () => {
                                                     />
                                                 </div>
 
-                                                <div className="mb-6">
+                                                <div className="">
                                                     <label
                                                         htmlFor="number"
                                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -207,36 +209,26 @@ const UserPage: NextPage = () => {
                                                         onChange={handleChange}
                                                     />
                                                 </div>
-                                                <div className="mb-6">
+                                                <div className="">
                                                     <label
                                                         htmlFor="name"
                                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                                                     >
                                                         Address
                                                     </label>
-                                                    {/*<input*/}
-                                                    {/*    type="text"*/}
-                                                    {/*    id="name"*/}
-                                                    {/*    name="address"*/}
-                                                    {/*    placeholder="Alabama"*/}
-                                                    {/*    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"*/}
-                                                    {/*    required*/}
-                                                    {/*    value={userData.address}*/}
-                                                    {/*    onChange={handleChange}*/}
-                                                    {/*/>*/}
                                                     <AutocompleteBox
                                                         value={address}
                                                         setAddress={setAddress}
                                                     />
                                                 </div>
-                                                <div className="flex items-start">
-                                                    <button
-                                                        type="submit"
-                                                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                                    >
-                                                        {onSubmit ? <Loading /> : 'submit'}
-                                                    </button>
-                                                </div>
+                                            </div>
+                                            <div className="flex items-start">
+                                                <button
+                                                    type="submit"
+                                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                >
+                                                    {onSubmit ? <Loading /> : 'submit'}
+                                                </button>
                                             </div>
                                         </form>
                                     </Dialog.Panel>
