@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { IUserData } from '@/interfaces/data-type';
 import { getAllUser } from '@/redux/actions/user-action';
 import DashboardLayout from '@/screens/layout/layout';
+import { stateOptions } from '@/utils/data-location';
 
 /**
  * TODO:
@@ -35,8 +36,8 @@ const UserPage: NextPage = () => {
         phoneNumber: '',
         fullName: '',
         idNumber: '',
-        address: '',
     });
+    const [address, setAddress] = useState(stateOptions[0].label);
 
     const fetchUsersData = useCallback(() => dispatch(getAllUser() as any), [dispatch]);
     const stateUser = useAppSelector((state) => state.getAllUser);
@@ -70,7 +71,10 @@ const UserPage: NextPage = () => {
         setOnSubmit(true);
 
         try {
-            const response = (await userApi.create(userData)) as unknown as {
+            const response = (await userApi.create({
+                ...userData,
+                address: address,
+            })) as unknown as {
                 token: string;
                 user: IUserData;
             };
@@ -147,93 +151,92 @@ const UserPage: NextPage = () => {
                                         </div>
 
                                         <form onSubmit={handleCreateUser} className="mt-4">
-                                            <div className="grid grid-cols-2 gap-5 w-full h-full">
-                                                <div>
-                                                    <div className="mb-6">
-                                                        <label
-                                                            htmlFor="number"
-                                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                        >
-                                                            ID Number
-                                                        </label>
-                                                        <input
-                                                            type="number"
-                                                            id="number"
-                                                            name="idNumber"
-                                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                            required
-                                                            placeholder="00xxxxxxx"
-                                                            value={userData.idNumber}
-                                                            onChange={handleChange}
-                                                        />
-                                                    </div>
-                                                    <div className="mb-6">
-                                                        <label
-                                                            htmlFor="name"
-                                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                        >
-                                                            Full Name
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            id="name"
-                                                            name="fullName"
-                                                            placeholder="Richard Feynmann"
-                                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                            required
-                                                            value={userData.fullName}
-                                                            onChange={handleChange}
-                                                        />
-                                                    </div>
+                                            <div className="flex flex-col gap-5 ">
+                                                <div className="mb-6">
+                                                    <label
+                                                        htmlFor="number"
+                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    >
+                                                        ID Number
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        id="number"
+                                                        name="idNumber"
+                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        required
+                                                        placeholder="00xxxxxxx"
+                                                        value={userData.idNumber}
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                                <div className="mb-6">
+                                                    <label
+                                                        htmlFor="name"
+                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    >
+                                                        Full Name
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        id="name"
+                                                        name="fullName"
+                                                        placeholder="Richard Feynmann"
+                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        required
+                                                        value={userData.fullName}
+                                                        onChange={handleChange}
+                                                    />
                                                 </div>
 
-                                                <div>
-                                                    <div className="mb-6">
-                                                        <label
-                                                            htmlFor="number"
-                                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                        >
-                                                            Phone Number
-                                                        </label>
-                                                        <input
-                                                            type="number"
-                                                            id="number"
-                                                            name="phoneNumber"
-                                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                            placeholder="user phone number"
-                                                            required
-                                                            value={userData.phoneNumber}
-                                                            onChange={handleChange}
-                                                        />
-                                                    </div>
-                                                    <div className="mb-6">
-                                                        <label
-                                                            htmlFor="name"
-                                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                        >
-                                                            Address
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            id="name"
-                                                            name="address"
-                                                            placeholder="Alabama"
-                                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                            required
-                                                            value={userData.address}
-                                                            onChange={handleChange}
-                                                        />
-                                                        {/*<AutocompleteBox />*/}
-                                                    </div>
+                                                <div className="mb-6">
+                                                    <label
+                                                        htmlFor="number"
+                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    >
+                                                        Phone Number
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        id="number"
+                                                        name="phoneNumber"
+                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        placeholder="user phone number"
+                                                        required
+                                                        value={userData.phoneNumber}
+                                                        onChange={handleChange}
+                                                    />
                                                 </div>
-                                            </div>
-                                            <div className="flex items-start">
-                                                <button
-                                                    type="submit"
-                                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                                >
-                                                    {onSubmit ? <Loading /> : 'submit'}
-                                                </button>
+                                                <div className="mb-6">
+                                                    <label
+                                                        htmlFor="name"
+                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    >
+                                                        Address
+                                                    </label>
+                                                    {/*<input*/}
+                                                    {/*    type="text"*/}
+                                                    {/*    id="name"*/}
+                                                    {/*    name="address"*/}
+                                                    {/*    placeholder="Alabama"*/}
+                                                    {/*    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"*/}
+                                                    {/*    required*/}
+                                                    {/*    value={userData.address}*/}
+                                                    {/*    onChange={handleChange}*/}
+                                                    {/*/>*/}
+                                                    <AutocompleteBox
+                                                        value={address}
+                                                        setAddress={setAddress}
+                                                    />
+                                                </div>
+                                                <div className="flex items-start">
+                                                    <button
+                                                        type="submit"
+                                                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                    >
+                                                        {onSubmit ? <Loading /> : 'submit'}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </form>
                                     </Dialog.Panel>
