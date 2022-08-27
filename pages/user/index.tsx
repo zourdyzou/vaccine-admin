@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import { Fragment, useState } from 'react';
 
 import { userApi } from '@/axios/userApi';
+import { AutocompleteBox } from '@/components/shared/AutocompleteBox';
 import { Loading } from '@/components/shared/Loading';
 import { UserTable } from '@/components/shared/UserTable';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
@@ -131,7 +132,7 @@ const UserPage: NextPage = () => {
                                     leaveFrom="opacity-100 scale-100"
                                     leaveTo="opacity-0 scale-95"
                                 >
-                                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                    <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                         <Dialog.Title
                                             as="h2"
                                             className="text-2xl font-medium leading-6 text-gray-900 flex items-center gap-2"
@@ -146,7 +147,7 @@ const UserPage: NextPage = () => {
                                         </div>
 
                                         <form onSubmit={handleCreateUser} className="mt-4">
-                                            <div className="grid grid-cols-2 gap-5">
+                                            <div className="grid grid-cols-2 gap-5 w-full h-full">
                                                 <div>
                                                     <div className="mb-6">
                                                         <label
@@ -222,6 +223,7 @@ const UserPage: NextPage = () => {
                                                             value={userData.address}
                                                             onChange={handleChange}
                                                         />
+                                                        {/*<AutocompleteBox />*/}
                                                     </div>
                                                 </div>
                                             </div>

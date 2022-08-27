@@ -31,21 +31,28 @@ const UserDetailPage: NextPage = () => {
             <Head>
                 <title>Vaccination Management</title>
             </Head>
-            {userState.loading ? (
-                <Box sx={{ width: '100%', height: '100%' }}>
-                    <div className="flex items-center justify-center h-screen">
-                        <Loading />
-                    </div>
-                </Box>
-            ) : (
-                <DashboardLayout>
-                    <div className="m-4 mt-10 flex flex-grow xl:flex-nowrap flex-wrap gap-5">
-                        <h1>User Detail</h1>
-                    </div>
-                </DashboardLayout>
-            )}
+            <DashboardLayout>
+                <div className="m-4 mt-10 flex">
+                    <h1 className="text-2xl font-semibold">User Detail</h1>
+                    {/*  UserDetails  */}
+                </div>
+            </DashboardLayout>
         </>
     );
 };
 
 export default UserDetailPage;
+
+// {userState.loading ? (
+//   <Box sx={{ width: '100%', height: '100%' }}>
+//       <div className="flex items-center justify-center h-screen">
+//           <Loading />
+//       </div>
+//   </Box>
+// ) : (
+//   <DashboardLayout>
+//       <div className="m-4 mt-10 h-full w-full">
+//           <h1 className="text-2xl font-semibold">User Detail</h1>
+//       </div>
+//   </DashboardLayout>
+// )}
