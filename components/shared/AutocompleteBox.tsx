@@ -1,4 +1,5 @@
 import { Fragment, FunctionComponent, useState } from 'react';
+import * as React from 'react';
 import Autosuggest from 'react-autosuggest';
 
 import { stateOptions, StateOption } from '@/utils/data-location';
@@ -29,10 +30,14 @@ const renderSuggestion = (suggestion: StateOption) => (
 
 interface AutocompleteProps {
     value: string;
-    setAddress: (value: string) => void;
+    handleChange: (
+        event?: React.ChangeEvent<HTMLInputElement> | null,
+        additionalKey?: string,
+        additionalProp?: string,
+    ) => void;
 }
 
-export const AutocompleteBox: FunctionComponent<AutocompleteProps> = ({ value, setAddress }) => {
+export const AutocompleteBox: FunctionComponent<AutocompleteProps> = ({ value, handleChange }) => {
     const [query, setQuery] = useState(value);
     const [suggestions, setSuggestions] = useState<StateOption[]>([]);
 
@@ -49,7 +54,7 @@ export const AutocompleteBox: FunctionComponent<AutocompleteProps> = ({ value, s
                     value: query,
                     onChange: (_event, target) => {
                         setQuery(target.newValue);
-                        setAddress(target.newValue);
+                        handleChange(null, 'address', target.newValue);
                     },
                     name: 'address',
                     className:

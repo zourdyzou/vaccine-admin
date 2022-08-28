@@ -36,8 +36,8 @@ const UserPage: NextPage = () => {
         phoneNumber: '',
         fullName: '',
         idNumber: '',
+        address: stateOptions[0].label,
     });
-    const [address, setAddress] = useState(stateOptions[0].label);
 
     const fetchUsersData = useCallback(() => dispatch(getAllUser() as any), [dispatch]);
 
@@ -53,12 +53,16 @@ const UserPage: NextPage = () => {
         setIsOpen(true);
     }
 
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const value = event.target.value;
-
+    function handleChange(
+        event?: React.ChangeEvent<HTMLInputElement> | null,
+        additionalKey?: string,
+        additionalProp?: string,
+    ) {
         setUserData((prevState) => ({
             ...prevState,
-            [event.target.name]: value,
+            [event ? event.target.name : additionalKey]: event
+                ? event.target.value
+                : additionalProp,
         }));
     }
 
@@ -73,7 +77,6 @@ const UserPage: NextPage = () => {
             try {
                 const createdUser = (await userApi.create({
                     ...userData,
-                    address,
                 })) as unknown as {
                     user: IUserData;
                     token: string;
@@ -87,7 +90,7 @@ const UserPage: NextPage = () => {
                 setOnSubmit(false);
             }
         },
-        [address, onSubmit, router, userData],
+        [onSubmit, router, userData],
     );
 
     return (
@@ -217,8 +220,8 @@ const UserPage: NextPage = () => {
                                                         Address
                                                     </label>
                                                     <AutocompleteBox
-                                                        value={address}
-                                                        setAddress={setAddress}
+                                                        value={userData.address}
+                                                        handleChange={handleChange}
                                                     />
                                                 </div>
                                             </div>
