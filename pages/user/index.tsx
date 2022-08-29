@@ -115,8 +115,6 @@ const UserPage: NextPage = () => {
         [onSubmit, router, userData],
     );
 
-    console.log(userData);
-
     return (
         <>
             <Head>

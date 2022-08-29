@@ -1,26 +1,16 @@
 import {
-    CreateUserState,
     VaccinationUserState,
-    UpdateUserState,
     GetAllUserState,
+    GetSingleUserState,
 } from '@/redux/reducers/user-reducer';
 
-export const userInitialState: CreateUserState = {
+export const userInitialState: GetSingleUserState = {
     phoneNumber: '',
     fullName: '',
     idNumber: '',
     address: '',
     vaccine: [],
     id: '',
-    loading: false,
-    error: '',
-};
-
-export const updateUserInitialState: UpdateUserState = {
-    phoneNumber: '',
-    fullName: '',
-    idNumber: '',
-    address: '',
     loading: false,
     error: '',
 };
