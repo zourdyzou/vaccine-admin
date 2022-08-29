@@ -1,16 +1,14 @@
 // @ts-nocheck
-import { Dialog, Transition } from '@headlessui/react';
-import { UserAddIcon, UserIcon } from '@heroicons/react/outline';
+import { UserAddIcon } from '@heroicons/react/outline';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useCallback } from 'react';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 import { userApi } from '@/axios/userApi';
-import { AutocompleteBox } from '@/components/shared/AutocompleteBox';
-import { Loading } from '@/components/shared/Loading';
+import { UserDetailsDialog } from '@/components/shared/UserDetailsDialog';
 import { UserTable } from '@/components/shared/UserTable';
 import { useAppDispatch } from '@/hooks/redux';
 import { IUserData } from '@/interfaces/data-type';
@@ -24,14 +22,19 @@ import { stateOptions } from '@/utils/data-location';
  * If user is created admin will be redirected to the user detail page
  *
  * Refactor logic handler => functions
+ *
+ * Context API for the next refactor round
  * @constructor
  */
 const UserPage: NextPage = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const [isOpen, setIsOpen] = useState(false);
     const [onSubmit, setOnSubmit] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const closeModal = () => setIsOpen(false);
+    const openModal = () => setIsOpen(true);
     const [userData, setUserData] = useState({
         phoneNumber: '',
         fullName: '',
@@ -39,32 +42,29 @@ const UserPage: NextPage = () => {
         address: stateOptions[0].label,
     });
 
-    const fetchUsersData = useCallback(() => dispatch(getAllUser() as any), [dispatch]);
+    const [errorIncomplete, setErrorIncomplete] = useState({
+        status: false,
+        message: '',
+    });
 
-    React.useEffect(() => {
-        fetchUsersData();
-    }, [fetchUsersData]);
-
-    function closeModal() {
-        setIsOpen(false);
-    }
-
-    function openModal() {
-        setIsOpen(true);
-    }
-
-    function handleChange(
+    const handleChange = (
         event?: React.ChangeEvent<HTMLInputElement> | null,
         additionalKey?: string,
         additionalProp?: string,
-    ) {
+    ) => {
         setUserData((prevState) => ({
             ...prevState,
             [event ? event.target.name : additionalKey]: event
                 ? event.target.value
                 : additionalProp,
         }));
-    }
+    };
+
+    const fetchUsersData = useCallback(() => dispatch(getAllUser() as any), [dispatch]);
+
+    React.useEffect(() => {
+        fetchUsersData();
+    }, [fetchUsersData]);
 
     const createUserHandler = React.useCallback(
         async (event: React.FormEvent<HTMLFormElement>) => {
@@ -75,16 +75,38 @@ const UserPage: NextPage = () => {
             setOnSubmit(true);
 
             try {
-                const createdUser = (await userApi.create({
-                    ...userData,
-                })) as unknown as {
-                    user: IUserData;
-                    token: string;
-                };
-
-                if (Object.entries(createdUser).length !== 0) {
+                if (
+                    !userData.fullName ||
+                    !userData.address ||
+                    !userData.phoneNumber ||
+                    !userData.idNumber
+                ) {
                     setOnSubmit(false);
-                    await router.push(`/user/${createdUser.user.id}`);
+
+                    setErrorIncomplete({
+                        status: true,
+                        message:
+                            'There is something wrong! you need to complete the form otherwise you could not send any data to the database',
+                    });
+
+                    setUserData({
+                        phoneNumber: '',
+                        fullName: '',
+                        idNumber: '',
+                        address: stateOptions[0].label,
+                    });
+                } else {
+                    const createdUser = (await userApi.create({
+                        ...userData,
+                    })) as unknown as {
+                        user: IUserData;
+                        token: string;
+                    };
+
+                    if (Object.entries(createdUser).length !== 0) {
+                        setOnSubmit(false);
+                        await router.push(`/user/${createdUser.user.id}`);
+                    }
                 }
             } catch (error) {
                 setOnSubmit(false);
@@ -92,6 +114,8 @@ const UserPage: NextPage = () => {
         },
         [onSubmit, router, userData],
     );
+
+    console.log(userData);
 
     return (
         <>
@@ -115,132 +139,15 @@ const UserPage: NextPage = () => {
                 </div>
             </DashboardLayout>
 
-            <>
-                <Transition appear show={isOpen} as={Fragment}>
-                    <Dialog as="div" className="relative z-10" onClose={closeModal}>
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0"
-                            enterTo="opacity-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                        >
-                            <div className="fixed inset-0 bg-black bg-opacity-25" />
-                        </Transition.Child>
-
-                        <div className="fixed inset-0 overflow-y-auto">
-                            <div className="flex min-h-full items-center justify-center p-4 text-center">
-                                <Transition.Child
-                                    as={Fragment}
-                                    enter="ease-out duration-300"
-                                    enterFrom="opacity-0 scale-95"
-                                    enterTo="opacity-100 scale-100"
-                                    leave="ease-in duration-200"
-                                    leaveFrom="opacity-100 scale-100"
-                                    leaveTo="opacity-0 scale-95"
-                                >
-                                    <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                        <Dialog.Title
-                                            as="h2"
-                                            className="text-2xl font-medium leading-6 text-gray-900 flex items-center gap-2"
-                                        >
-                                            <UserIcon className="w-7 h-7" />
-                                            Create user
-                                        </Dialog.Title>
-                                        <div className="mt-4 mb-6">
-                                            <p className="text-sm text-gray-500">
-                                                Add new user information to the database.
-                                            </p>
-                                        </div>
-
-                                        <form onSubmit={createUserHandler} className="mt-4">
-                                            <div className="flex flex-col gap-4 mb-6">
-                                                <div className="">
-                                                    <label
-                                                        htmlFor="number"
-                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                    >
-                                                        ID Number
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        id="number"
-                                                        name="idNumber"
-                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                        required
-                                                        placeholder="00xxxxxxx"
-                                                        value={userData.idNumber}
-                                                        onChange={handleChange}
-                                                    />
-                                                </div>
-                                                <div className="">
-                                                    <label
-                                                        htmlFor="name"
-                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                    >
-                                                        Full Name
-                                                    </label>
-                                                    <input
-                                                        type="text"
-                                                        id="name"
-                                                        name="fullName"
-                                                        placeholder="Richard Feynmann"
-                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                        required
-                                                        value={userData.fullName}
-                                                        onChange={handleChange}
-                                                    />
-                                                </div>
-
-                                                <div className="">
-                                                    <label
-                                                        htmlFor="number"
-                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                    >
-                                                        Phone Number
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        id="number"
-                                                        name="phoneNumber"
-                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                        placeholder="user phone number"
-                                                        required
-                                                        value={userData.phoneNumber}
-                                                        onChange={handleChange}
-                                                    />
-                                                </div>
-                                                <div className="">
-                                                    <label
-                                                        htmlFor="name"
-                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                    >
-                                                        Address
-                                                    </label>
-                                                    <AutocompleteBox
-                                                        value={userData.address}
-                                                        handleChange={handleChange}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start">
-                                                <button
-                                                    type="submit"
-                                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                                >
-                                                    {onSubmit ? <Loading /> : 'submit'}
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </Dialog.Panel>
-                                </Transition.Child>
-                            </div>
-                        </div>
-                    </Dialog>
-                </Transition>
-            </>
+            <UserDetailsDialog
+                isOpen={isOpen}
+                closeModal={closeModal}
+                createUserHandler={createUserHandler}
+                onSubmit={onSubmit}
+                errorIncomplete={errorIncomplete}
+                handleChange={handleChange}
+                userData={userData}
+            />
         </>
     );
 };
