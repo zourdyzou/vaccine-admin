@@ -21,6 +21,8 @@ type AppContextState = {
         additionalProp?: string,
     ) => void;
     setUserData: Dispatch<SetStateAction<TypedUserParams>>;
+    onSubmitting: boolean;
+    setOnSubmitting: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppContext = createContext<AppContextState>({
@@ -35,10 +37,13 @@ const AppContext = createContext<AppContextState>({
     handleChange: () => null,
     isOpen: false,
     setUserData: () => null,
+    onSubmitting: false,
+    setOnSubmitting: () => null,
 });
 
 const AppContextProvider = (props: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [onSubmitting, setOnSubmitting] = useState(false);
     const [userData, setUserData] = useState({
         phoneNumber: '',
         fullName: '',
@@ -71,6 +76,8 @@ const AppContextProvider = (props: { children: ReactNode }) => {
                 handleChange,
                 isOpen,
                 setUserData,
+                onSubmitting,
+                setOnSubmitting,
             }}
         >
             {props.children}

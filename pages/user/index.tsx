@@ -19,19 +19,15 @@ import { stateOptions } from '@/utils/data-location';
 /**
  * TODO:
  * Create form handling error using RHF/Formik
- * If user is created admin will be redirected to the user detail page
  *
- * Refactor logic handler => functions
- *
- * Context API for the next refactor round
  * @constructor
  */
 const UserPage: NextPage = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const { userState, setUserData, openModal, closeModal } = useAppContext();
-    const [onSubmit, setOnSubmit] = useState(false);
+    const { userState, setUserData, openModal, closeModal, onSubmitting, setOnSubmitting } =
+        useAppContext();
 
     const [errorIncomplete, setErrorIncomplete] = useState({
         status: false,
@@ -48,9 +44,9 @@ const UserPage: NextPage = () => {
         async (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
 
-            if (onSubmit) return;
+            if (onSubmitting) return;
 
-            setOnSubmit(true);
+            setOnSubmitting(true);
 
             try {
                 if (
@@ -59,7 +55,7 @@ const UserPage: NextPage = () => {
                     !userState.phoneNumber ||
                     !userState.idNumber
                 ) {
-                    setOnSubmit(false);
+                    setOnSubmitting(false);
 
                     setErrorIncomplete({
                         status: true,
@@ -82,7 +78,7 @@ const UserPage: NextPage = () => {
                     };
 
                     if (Object.entries(createdUser).length !== 0) {
-                        setOnSubmit(false);
+                        setOnSubmitting(false);
                         closeModal();
                         setUserData({
                             phoneNumber: '',
@@ -94,10 +90,10 @@ const UserPage: NextPage = () => {
                     }
                 }
             } catch (error) {
-                setOnSubmit(false);
+                setOnSubmitting(false);
             }
         },
-        [closeModal, onSubmit, router, setUserData, userState],
+        [closeModal, onSubmitting, router, setOnSubmitting, setUserData, userState],
     );
 
     return (
@@ -124,7 +120,7 @@ const UserPage: NextPage = () => {
 
             <UserDetailsDialog
                 createUserHandler={createUserHandler}
-                onSubmit={onSubmit}
+                onSubmit={onSubmitting}
                 errorIncomplete={errorIncomplete}
             />
         </>
