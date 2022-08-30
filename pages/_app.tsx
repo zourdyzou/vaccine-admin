@@ -10,6 +10,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import { store } from '@/redux/store';
+import { AppContextProvider } from '@/utils/app-context';
 
 import lightThemeOptions from '../styles/theme/lightThemeOptions';
 import createEmotionCache from '../utils/createEmotionCache';
@@ -29,14 +30,16 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
     const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
     return (
-        <Provider store={store}>
-            <CacheProvider value={emotionCache}>
-                <ThemeProvider theme={lightTheme}>
-                    <CssBaseline />
-                    <Component {...pageProps} />
-                </ThemeProvider>
-            </CacheProvider>
-        </Provider>
+        <AppContextProvider>
+            <Provider store={store}>
+                <CacheProvider value={emotionCache}>
+                    <ThemeProvider theme={lightTheme}>
+                        <CssBaseline />
+                        <Component {...pageProps} />
+                    </ThemeProvider>
+                </CacheProvider>
+            </Provider>
+        </AppContextProvider>
     );
 };
 

@@ -6,27 +6,15 @@ import React, { Fragment } from 'react';
 
 import { AutocompleteBox } from '@/components/shared/AutocompleteBox';
 import { Loading } from '@/components/shared/Loading';
+import { useAppContext } from '@/utils/app-context';
 
 interface UserDialogProps {
     onSubmit: boolean;
-    closeModal: boolean;
-    isOpen: boolean;
     createUserHandler?: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
     updateUserHandler?: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
-    handleChange: (
-        event?: React.ChangeEvent<HTMLInputElement> | null,
-        additionalKey?: string,
-        additionalProp?: string,
-    ) => void;
     errorIncomplete: {
         message: string;
         status: boolean;
-    };
-    userData: {
-        phoneNumber: string;
-        fullName: string;
-        idNumber: string;
-        address: string;
     };
 }
 
@@ -34,12 +22,10 @@ export const UserDetailsDialog: React.FunctionComponent<UserDialogProps> = ({
     createUserHandler,
     updateUserHandler,
     onSubmit,
-    isOpen,
-    closeModal,
-    userData,
-    handleChange,
     errorIncomplete,
 }) => {
+    const { userState: userData, handleChange, isOpen, closeModal } = useAppContext();
+
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={closeModal}>

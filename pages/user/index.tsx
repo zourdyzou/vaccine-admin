@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { UserAddIcon } from '@heroicons/react/outline';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -14,6 +13,7 @@ import { useAppDispatch } from '@/hooks/redux';
 import { IUserData } from '@/interfaces/data-type';
 import { getAllUser } from '@/redux/actions/user-action';
 import DashboardLayout from '@/screens/layout/layout';
+import { useAppContext } from '@/utils/app-context';
 import { stateOptions } from '@/utils/data-location';
 
 /**
@@ -30,35 +30,13 @@ const UserPage: NextPage = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
+    const { userState, setUserData, openModal, closeModal } = useAppContext();
     const [onSubmit, setOnSubmit] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-
-    const closeModal = () => setIsOpen(false);
-    const openModal = () => setIsOpen(true);
-    const [userData, setUserData] = useState({
-        phoneNumber: '',
-        fullName: '',
-        idNumber: '',
-        address: stateOptions[0].label,
-    });
 
     const [errorIncomplete, setErrorIncomplete] = useState({
         status: false,
         message: '',
     });
-
-    const handleChange = (
-        event?: React.ChangeEvent<HTMLInputElement> | null,
-        additionalKey?: string,
-        additionalProp?: string,
-    ) => {
-        setUserData((prevState) => ({
-            ...prevState,
-            [event ? event.target.name : additionalKey]: event
-                ? event.target.value
-                : additionalProp,
-        }));
-    };
 
     const fetchUsersData = useCallback(() => dispatch(getAllUser() as any), [dispatch]);
 
@@ -76,10 +54,10 @@ const UserPage: NextPage = () => {
 
             try {
                 if (
-                    !userData.fullName ||
-                    !userData.address ||
-                    !userData.phoneNumber ||
-                    !userData.idNumber
+                    !userState.fullName ||
+                    !userState.address ||
+                    !userState.phoneNumber ||
+                    !userState.idNumber
                 ) {
                     setOnSubmit(false);
 
@@ -97,7 +75,7 @@ const UserPage: NextPage = () => {
                     });
                 } else {
                     const createdUser = (await userApi.create({
-                        ...userData,
+                        ...userState,
                     })) as unknown as {
                         user: IUserData;
                         token: string;
@@ -105,6 +83,13 @@ const UserPage: NextPage = () => {
 
                     if (Object.entries(createdUser).length !== 0) {
                         setOnSubmit(false);
+                        closeModal();
+                        setUserData({
+                            phoneNumber: '',
+                            fullName: '',
+                            idNumber: '',
+                            address: stateOptions[0].label,
+                        });
                         await router.push(`/user/${createdUser.user.id}`);
                     }
                 }
@@ -112,7 +97,7 @@ const UserPage: NextPage = () => {
                 setOnSubmit(false);
             }
         },
-        [onSubmit, router, userData],
+        [closeModal, onSubmit, router, setUserData, userState],
     );
 
     return (
@@ -138,13 +123,9 @@ const UserPage: NextPage = () => {
             </DashboardLayout>
 
             <UserDetailsDialog
-                isOpen={isOpen}
-                closeModal={closeModal}
                 createUserHandler={createUserHandler}
                 onSubmit={onSubmit}
                 errorIncomplete={errorIncomplete}
-                handleChange={handleChange}
-                userData={userData}
             />
         </>
     );
