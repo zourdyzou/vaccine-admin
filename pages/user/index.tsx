@@ -120,7 +120,6 @@ const UserPage: NextPage = () => {
 
             <UserDetailsDialog
                 createUserHandler={createUserHandler}
-                onSubmit={onSubmitting}
                 errorIncomplete={errorIncomplete}
             />
         </>
