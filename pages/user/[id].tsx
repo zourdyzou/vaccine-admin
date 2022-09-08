@@ -68,7 +68,7 @@ const UserDetailPage: NextPage = () => {
                                         id="number"
                                         name="idNumber"
                                         value={userState.idNumber}
-                                        className="bg-gray-600 text-gray-00 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
+                                        className="bg-gray-600 text-gray-00 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
                                         required
                                         disabled
                                     />
@@ -85,7 +85,7 @@ const UserDetailPage: NextPage = () => {
                                         id="name"
                                         name="fullName"
                                         value={userState.fullName}
-                                        className="bg-gray-600 text-gray-00 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
+                                        className="bg-gray-600 text-gray-00 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
                                         required
                                         disabled
                                     />
@@ -102,7 +102,7 @@ const UserDetailPage: NextPage = () => {
                                         id="number"
                                         name="phoneNumber"
                                         value={userState.phoneNumber}
-                                        className="bg-gray-600 text-gray-00 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
+                                        className="bg-gray-600 text-gray-00 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
                                         required
                                         disabled
                                     />
@@ -120,7 +120,7 @@ const UserDetailPage: NextPage = () => {
                                         id="address"
                                         name="address"
                                         value={userState.address}
-                                        className="bg-gray-600 text-gray-00 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
+                                        className="bg-gray-600 text-gray-00 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-100"
                                         required
                                         disabled
                                     />
